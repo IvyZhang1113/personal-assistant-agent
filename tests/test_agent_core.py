@@ -102,7 +102,9 @@ class TestDefaultResponder:
         )
 
         payload = mock_post.call_args.kwargs["json"]
-        assert payload["messages"] == [{"role": "user", "content": "hi"}]
+        assert payload["messages"][0]["role"] == "system"
+        assert payload["messages"][0]["content"]
+        assert payload["messages"][1:] == [{"role": "user", "content": "hi"}]
 
     @patch("assistant.agent_core.httpx.post")
     def test_http_error_raises_ollama_error(self, mock_post):
